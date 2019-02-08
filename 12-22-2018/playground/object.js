@@ -1,5 +1,7 @@
-const test = (obj, ...rem) => {
-  console.log(obj);
+// Nice destructuring....
+
+const test = (first, second, ...rem) => {
+  console.log(first, second);
   console.log(rem);
 };
 
