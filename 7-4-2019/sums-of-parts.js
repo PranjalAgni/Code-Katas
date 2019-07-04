@@ -1,6 +1,5 @@
 function partsSums(ls) {
   let ans = [0];
-
   for (let i = ls.length - 1, idx = 1; i >= 0; i--, idx++) {
     ans[idx] = ls[i] + ans[idx - 1];
   }
