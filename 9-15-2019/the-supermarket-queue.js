@@ -1,21 +1,23 @@
 function computeTime(queue, min) {
-  let newQueue = [];
   for (let i = 0; i < queue.length; i++) {
     queue[i] -= min;
-    if (queue[i] !== 0) {
-      newQueue.push(queue[i]);
-    }
   }
-  return newQueue;
+  return queue;
 }
 
 function queueTime(customers, n) {
   let ans = 0;
-  let queue = [];
+  let queue = Array(n).fill(0);
   let isQueue = false;
-  for (let i = 0; i < customers.length; i++) {
-    queue.push(customers[i]);
-    if (queue.length === n) {
+  for (let i = 0; i < customers.length; ) {
+    let queueIdx = queue.indexOf(0);
+    while (queueIdx !== -1 && i < customers.length) {
+      queue[queueIdx] = customers[i];
+      queueIdx = queue.indexOf(0);
+      i++;
+    }
+
+    if (n <= customers.length) {
       let min = Math.min(...queue);
       ans += min;
       queue = computeTime(queue, min);
