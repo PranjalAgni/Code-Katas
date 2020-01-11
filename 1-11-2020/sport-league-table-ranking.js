@@ -35,65 +35,111 @@ function decideWinner(teamA, teamB) {
 function makeTeamObject(mapTable, team, goalA, goalB, point) {
   const value = mapTable[team] || { points: 0, goal_s: 0, goal_c: 0 };
   return {
-    team_num: team,
+    id: team,
     points: value.points + point,
     goal_s: value.goal_s + goalA,
     goal_c: value.goal_c + goalB
   };
 }
+
+function cmp(mapTable) {
+  return (a, b) => {
+    const teamA = a;
+    const teamB = b;
+
+    const diffA = teamA.goal_s - teamA.goal_c;
+    const diffB = teamB.goal_s - teamB.goal_c;
+    return (
+      teamB.points - teamA.points ||
+      diffB - diffA ||
+      teamB.goal_s - teamA.goal_s
+    );
+  };
+}
 function computeRanks(number, games) {
   // Your solution
-  const mapTable = {};
+  const mapTable = Array(number).fill(0);
 
-  games.forEach(game => {
-    const [teamA, teamB, goalA, goalB] = game;
+  games.forEach(([teamA, teamB, goalA, goalB]) => {
     const points = calculatePoints(goalA, goalB);
     mapTable[teamA] = makeTeamObject(mapTable, teamA, goalA, goalB, points[0]);
     mapTable[teamB] = makeTeamObject(mapTable, teamB, goalB, goalA, points[1]);
   });
 
-  let mapTableArr = Object.keys(mapTable);
-  mapTableArr = mapTableArr.map(x => +x);
-  const drawTeams = [];
-  mapTableArr.sort((a, b) => {
-    const teamA = mapTable[a];
-    const teamB = mapTable[b];
-    const winner = decideWinner(teamA, teamB);
-    if (winner === 0) {
-      if (!drawTeams.includes(a)) drawTeams.push(a);
-      if (!drawTeams.includes(b)) drawTeams.push(b);
-    }
-    return winner;
-  });
+  const cmpCurried = cmp(mapTable);
+  mapTable.sort(cmpCurried);
 
-  let drawSharedPosition = null;
-  let ans = [];
-  for (let x = 0; x < mapTableArr.length; x++) {
-    if (drawTeams.includes(mapTableArr[x])) {
-      if (!drawSharedPosition) drawSharedPosition = x + 1;
-      ans[mapTableArr[x]] = drawSharedPosition;
-    } else {
-      ans[mapTableArr[x]] = x + 1;
+  const ans = Array(number).fill(0);
+  // for (let x = 0, prev = null, k; x < number; prev = mapTableArr[x++]) {
+  //   console.log(prev);
+
+  //   if (!prev || cmpCurried(mapTableArr[x], prev) !== 0) {
+  //     console.log(prev, mapTableArr[x]);
+  //     if (prev) console.log(cmpCurried(prev, mapTableArr[x]));
+  //     k = x + 1;
+  //   }
+  //   ans[mapTableArr[x]] = k;
+  // }
+
+  for (let i = 0, prev = null, k; i < number; prev = mapTable[i++]) {
+    if (!prev || cmpCurried(prev, mapTable[i]) !== 0) {
+      k = i + 1;
     }
+    ans[mapTable[i].id] = k;
   }
-
+  console.log(ans);
   return ans;
 }
 
-console.log(
-  computeRanks(6, [
-    [0, 5, 2, 2],
-    [1, 4, 0, 2],
-    [2, 3, 1, 2],
-    [1, 5, 2, 2],
-    [2, 0, 1, 1],
-    [3, 4, 1, 1],
-    [2, 5, 0, 2],
-    [3, 1, 1, 1],
-    [4, 0, 2, 0]
-  ]),
-  [4, 4, 6, 3, 1, 2]
-);
+// function computeRanks(number, games) {
+//   const teams = [...Array(number)].map((_, i) => ({
+//     id: i,
+//     score: 0,
+//     goals: 0,
+//     diff: 0
+//   }));
+//   games.forEach(([a, b, x, y]) => {
+//     teams[a].goals += x;
+//     teams[b].goals += y;
+//     teams[a].diff += x - y;
+//     teams[b].diff += y - x;
+//     if (x === y) {
+//       teams[a].score += 1;
+//       teams[b].score += 1;
+//     } else {
+//       teams[x > y ? a : b].score += 2;
+//     }
+//   });
+//   console.log(teams);
+//   const cmp = (a, b) =>
+//     b.score - a.score || b.diff - a.diff || b.goals - a.goals;
+//   teams.sort(cmp);
+//   const r = Array(number).fill(0);
+//   for (let i = 0, prev = null, k; i < number; prev = teams[i++]) {
+//     console.log(prev, teams[i].id);
+//     if (!prev || cmp(prev, teams[i]) !== 0) {
+//       console.log(prev, teams[i].id);
+//       k = i + 1;
+//       console.log(k);
+//     }
+//     r[teams[i].id] = k;
+//   }
+//   return r;
+// }
+// console.log(
+//   computeRanks(6, [
+//     [0, 5, 2, 2],
+//     [1, 4, 0, 2],
+//     [2, 3, 1, 2],
+//     [1, 5, 2, 2],
+//     [2, 0, 1, 1],
+//     [3, 4, 1, 1],
+//     [2, 5, 0, 2],
+//     [3, 1, 1, 1],
+//     [4, 0, 2, 0]
+//   ]),
+//   [4, 4, 6, 3, 1, 2]
+// );
 
 console.log(
   computeRanks(4, [
