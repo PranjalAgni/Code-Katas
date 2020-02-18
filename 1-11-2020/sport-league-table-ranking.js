@@ -44,8 +44,8 @@ function makeTeamObject(mapTable, team, goalA, goalB, point) {
 
 function cmp(mapTable) {
   return (a, b) => {
-    const teamA = a;
-    const teamB = b;
+    const teamA = mapTable[a];
+    const teamB = mapTable[b];
 
     const diffA = teamA.goal_s - teamA.goal_c;
     const diffB = teamB.goal_s - teamB.goal_c;
@@ -58,7 +58,7 @@ function cmp(mapTable) {
 }
 function computeRanks(number, games) {
   // Your solution
-  const mapTable = Array(number).fill(0);
+  const mapTable = {};
 
   games.forEach(([teamA, teamB, goalA, goalB]) => {
     const points = calculatePoints(goalA, goalB);
@@ -66,27 +66,36 @@ function computeRanks(number, games) {
     mapTable[teamB] = makeTeamObject(mapTable, teamB, goalB, goalA, points[1]);
   });
 
+  const mapTableArr = Object.keys(mapTable).map(x => +x);
+  console.log(mapTable);
   const cmpCurried = cmp(mapTable);
-  mapTable.sort(cmpCurried);
-
+  mapTableArr.sort(cmpCurried);
+  console.log(mapTableArr);
   const ans = Array(number).fill(0);
-  // for (let x = 0, prev = null, k; x < number; prev = mapTableArr[x++]) {
-  //   console.log(prev);
+  const sharedState = {};
+  for (let x = 0; x < number - 1; x++) {
+    if (cmpCurried(mapTableArr[x], mapTableArr[x + 1]) === 0) {
+      const current = mapTableArr[x];
+      const next = mapTableArr[x + 1];
 
-  //   if (!prev || cmpCurried(mapTableArr[x], prev) !== 0) {
-  //     console.log(prev, mapTableArr[x]);
-  //     if (prev) console.log(cmpCurried(prev, mapTableArr[x]));
-  //     k = x + 1;
-  //   }
-  //   ans[mapTableArr[x]] = k;
-  // }
+      let k = sharedState[current] || sharedState[next];
+      if (!k) k = x + 1;
+      if (!sharedState[current]) sharedState[current] = k;
+      if (!sharedState[next]) sharedState[next] = k;
 
-  for (let i = 0, prev = null, k; i < number; prev = mapTable[i++]) {
-    if (!prev || cmpCurried(prev, mapTable[i]) !== 0) {
-      k = i + 1;
+      ans[current] = sharedState[current];
+      ans[next] = sharedState[next];
+    } else {
+      ans[mapTableArr[x]] = x;
     }
-    ans[mapTable[i].id] = k;
   }
+
+  // for (let i = 0, prev = null, k; i < number; prev = mapTable[i++]) {
+  //   if (!prev || cmpCurried(prev, mapTable[i]) !== 0) {
+  //     k = i + 1;
+  //   }
+  //   ans[mapTable[i].id] = k;
+  // }
   console.log(ans);
   return ans;
 }
