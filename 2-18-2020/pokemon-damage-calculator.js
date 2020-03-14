@@ -29,9 +29,6 @@ const effictivenessMap = {
 };
 
 function calculateDamage(yourType, opponentType, attack, defense) {
-  console.log(yourType + '  ' + opponentType);
-  console.log(attack + '  ' + defense);
-
   let effictiveFactor = 0.5;
   const oppIdx = types[opponentType];
 
