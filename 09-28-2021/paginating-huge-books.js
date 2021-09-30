@@ -2,6 +2,7 @@ function countDigits(num) {
   return BigInt(num.toString().length);
 }
 
+// Time: O(N) | Space: O(1)
 function pageDigits(pages) {
   let totalDigits = 0n;
   let currentPage = 1n;
