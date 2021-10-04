@@ -18,12 +18,15 @@ const compress = function (str) {
   return compressedOutput.length < N ? compressedOutput : str;
 };
 
+// Naive implementation of JSON.parse()
+// Time: O(N) | Space: O(N)
+// N = number of characters
 const parseString = function (string) {
   const decompressedOutput = [];
   const N = string.length;
   let times = 0;
   for (let idx = 2; idx < N; idx++) {
-    while (!Object.is(parseInt(string[idx]), NaN)) {
+    while (!isNaN(parseInt(string[idx]))) {
       times = times * 10 + parseInt(string[idx]);
       idx += 1;
     }
