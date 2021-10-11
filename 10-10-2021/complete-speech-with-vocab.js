@@ -1,12 +1,15 @@
+// Time: O(1) | Space: O(1)
 const isValidCharacter = (ch) => {
   return ch === '*' || (ch >= 'a' && ch <= 'z');
 };
 
+// Time: O(M) | Space: O(M)
 const filterVocabluryWords = (vocabulary, length) => {
   return vocabulary.filter((vocab) => vocab.length === length);
 };
 
-const preparewordToPositionMap = (vocabulary) => {
+// Time: O(M) | Space: O(M)
+const prepareWordToPositionMap = (vocabulary) => {
   const wordToPosMap = new Map();
   let pos = 0;
   while (pos < vocabulary.length) {
@@ -17,10 +20,18 @@ const preparewordToPositionMap = (vocabulary) => {
   return wordToPosMap;
 };
 
+// Time: O(N*M) | Space: O(M)
+// N = length of trimmedWord
+// M = number of words in vocabulary list
 const suggestWord = (trimmedWord, vocabulary) => {
-  const wordToPosMap = preparewordToPositionMap(vocabulary);
+  // Preparing a map from vocabulary list
+  const wordToPosMap = prepareWordToPositionMap(vocabulary);
   const N = trimmedWord.length;
   const sameLengthVocabWords = filterVocabluryWords(vocabulary, N);
+  // iterating in the trimmedWord, and removing the words from sameLengthVocabWords which does not match the trimmedWord
+  // Time: O(N*M)
+  // N = length of trimmedWord
+  // M = number of words in sameLengthVocabWords list
   for (let idx = 0; idx < N; idx++) {
     if (trimmedWord[idx] !== '*') {
       for (let jdx = 0; jdx < sameLengthVocabWords.length; jdx++) {
@@ -35,6 +46,8 @@ const suggestWord = (trimmedWord, vocabulary) => {
     }
   }
 
+  // if the word exist then it means that is the matching word from vocab list
+  // also remove it from vocab list so we dont use it twice
   if (sameLengthVocabWords.length) {
     const position = wordToPosMap.get(sameLengthVocabWords[0]);
     vocabulary.splice(position, 1);
@@ -43,9 +56,21 @@ const suggestWord = (trimmedWord, vocabulary) => {
 
   return '';
 };
+
+// Time: O(N * K + M * K) | Space: O(N + M)
+// N = number of words in speech word list
+// K = length of longest word
+// M = number fo words in vocablury list
 function translate(speech, vocabulary) {
+  // converting string to list of word by splitting on spaces
+  // Time: O(N)
+  // N = number of words
   const words = speech.split(' ');
 
+  // Run for every word and pick the correct word from vocablury list
+  // Time: O(N * K)
+  // N = number of words
+  // K = length of longest word
   const decodedWords = words.map((word) => {
     let trimmedWord = '';
     let suffix = '';
