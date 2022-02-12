@@ -1,0 +1,16 @@
+{
+  "name": "2-12-2022",
+  "version": "1.0.0",
+  "description": "",
+  "main": "reverse-process.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^9.2.0"
+  }
+}
