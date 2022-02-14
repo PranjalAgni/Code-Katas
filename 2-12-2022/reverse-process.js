@@ -17,13 +17,14 @@ function modInverse(a, b) {
   return 1;
 }
 
+// Time: O(N) | Space: O(N)
+// N = length of string(str)
 function decode(text) {
   const num = parseInt(text);
   const str = text.split(num)[1];
   let originalStr = '';
   const modInverseValue = modInverse(num, 26);
   if (modInverseValue == 1) return 'Impossible to decode';
-  // 12 * 6015 % 26 = 4
 
   for (const alphabet of str) {
     const position = getPositionOfCharacter(alphabet);
