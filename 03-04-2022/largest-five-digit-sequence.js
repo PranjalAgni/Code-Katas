@@ -1,5 +1,13 @@
 function solution(digits) {
-  return digits;
+  const length = digits.length;
+  let answer = parseInt(digits.substr(0, 5));
+  let currentNumber = answer;
+  for (let idx = 1; idx <= length - 5; idx++) {
+    currentNumber = (currentNumber % 10000) * 10 + parseInt(digits[idx + 4]);
+    answer = Math.max(answer, currentNumber);
+  }
+
+  return answer;
 }
 
 let number =
