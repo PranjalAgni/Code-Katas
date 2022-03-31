@@ -1,11 +1,11 @@
 const createNDimensionalArray = (n, size) => {
   const text = `level ${n}`;
-  const placeholderArray = new Array(size).fill(text);
-  console.log(placeholderArray);
-  if (n === 1) return placeholderArray;
-  const answer = [];
-
-  return [];
+  let answer = new Array(size).fill(text);
+  if (n === 1) return answer;
+  while (n-- > 1) {
+    answer = Array(size).fill(answer);
+  }
+  return answer;
 };
 
 console.log(createNDimensionalArray(1, 2), ['level 1', 'level 1']);
