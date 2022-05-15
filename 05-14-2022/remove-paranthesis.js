@@ -1,6 +1,6 @@
-function removeParentheses(s) {
+function removeParentheses(str) {
   const stack = [];
-  for (const char of s) {
+  for (const char of str) {
     if (char === ')') {
       while (stack[stack.length - 1] !== '(') {
         stack.pop();
