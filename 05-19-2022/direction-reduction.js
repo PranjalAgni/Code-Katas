@@ -11,6 +11,7 @@ const checkIsOpposite = (dirA, dirB) => {
     'west-east',
   ];
   const currentDir = `${dirA.toLowerCase()}-${dirB.toLowerCase()}`;
+  console.log(currentDir);
   return oppositeDirectionsList.includes(currentDir);
 };
 
@@ -18,13 +19,13 @@ function dirReduc(arr) {
   const stack = [];
   arr.forEach((element) => {
     if (stack.length && checkIsOpposite(element, stack[0])) {
-      stack.pop();
+      stack.shift();
     } else {
-      stack.push(element);
+      stack.unshift(element);
     }
   });
 
-  console.log(stack);
+  return stack.reverse();
 }
 
 function doTest(input, expected) {
@@ -33,10 +34,15 @@ function doTest(input, expected) {
   console.log(actual, expected, log);
 }
 
-console.log(
-  doTest(['NORTH', 'SOUTH', 'SOUTH', 'EAST', 'WEST', 'NORTH', 'WEST'], ['WEST'])
-);
-console.log(
-  doTest(['NORTH', 'WEST', 'SOUTH', 'EAST'], ['NORTH', 'WEST', 'SOUTH', 'EAST'])
-);
-console.log(doTest(['NORTH', 'SOUTH', 'EAST', 'WEST', 'EAST', 'WEST'], []));
+doTest(['NORTH', 'SOUTH', 'SOUTH', 'EAST', 'WEST', 'NORTH', 'WEST'], ['WEST']);
+
+doTest(['NORTH', 'WEST', 'SOUTH', 'EAST'], ['NORTH', 'WEST', 'SOUTH', 'EAST']);
+
+doTest(['NORTH', 'SOUTH', 'EAST', 'WEST', 'EAST', 'WEST'], []);
+
+/** 
+  N S S E
+
+  Stack = [N], [], [s] []
+
+*/
