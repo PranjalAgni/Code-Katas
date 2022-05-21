@@ -1,5 +1,5 @@
 /**
- *
+ * Date time: Saturday 21 May
  * @param {string} dirA
  * @param {string} dirB
  */
