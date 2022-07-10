@@ -12,7 +12,7 @@ function compareVersions(version1, version2) {
     else return valA > valB;
   }
 
-  return N > M;
+  return N >= M;
 }
 
 console.log(compareVersions('11', '10'));
