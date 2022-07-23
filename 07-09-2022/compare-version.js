@@ -4,7 +4,8 @@ function compareVersions(version1, version2) {
   const N = version1List.length;
   const M = version2List.length;
   const min = Math.min(N, M);
-
+  console.log("Length = ", min);
+  
   for (let idx = 0; idx < min; idx++) {
     const valA = parseInt(version1List[idx]);
     const valB = parseInt(version2List[idx]);
