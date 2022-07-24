@@ -1,3 +1,4 @@
+// Time: O(N) | Space: O(1)
 function addSuffix(year) {
   if (year <= 20) return 'th';
   const lastDigit = year % 10;
