@@ -1,5 +1,5 @@
 // Time: O(N) | Space: O(1)
-// Implementation problem 
+// Implementation problem
 function addSuffix(year) {
   if (year <= 20) return 'th';
   const lastDigit = year % 10;
@@ -7,8 +7,13 @@ function addSuffix(year) {
   return suffixes[lastDigit - 1] ?? 'th';
 }
 
+function isAlreadyCentury(year) {
+  return year.substr(2, 2) === '00';
+}
+
 function whatCentury(year) {
-  const lastTwoDigits = parseInt(year.substr(2, 2)) || 100;
+  if (isAlreadyCentury(year)) return year + addSuffix(parseInt(year));
+  const lastTwoDigits = parseInt(year.substr(2, 2));
   const numYearsToMakeItCentury = 100 - lastTwoDigits;
   const itsCenturyYear = parseInt(year) + numYearsToMakeItCentury;
   const answer = itsCenturyYear.toString().substring(0, 2);
