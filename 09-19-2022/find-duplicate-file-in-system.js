@@ -1,26 +1,25 @@
 // https://leetcode.com/problems/find-duplicate-file-in-system/
+
 /**
  * @param {string[]} paths
  * @return {string[][]}
  */
 
-const addExtension = (fileName) => `${fileName}.txt`;
+const addExtension = (baseDir, fileName) => `${baseDir}/${fileName}.txt`;
 
-var findDuplicate = function (paths) {
+const findDuplicate = function (directories) {
   const hashMap = {};
-  const output = [];
-  for (const path of paths) {
-    const [fileName, content] = path.split('.txt');
-    if (!hashMap[content]) hashMap[content] = [addExtension(fileName)];
-    else hashMap[content].push(addExtension(fileName));
-  }
+  for (const directory of directories) {
+    const paths = directory.split(' ');
+    let baseDir = paths.shift();
 
-  const fileNameList = Object.values(hashMap);
-  for (const fileNameSubList of fileNameList) {
-    if (fileNameSubList.length > 1) {
-      output.push(fileNameSubList);
+    for (const path of paths) {
+      const [fileName, content] = path.split('.txt');
+      if (!hashMap[content])
+        hashMap[content] = [addExtension(baseDir, fileName)];
+      else hashMap[content].push(addExtension(baseDir, fileName));
     }
   }
 
-  return fileNameList;
+  return Object.values(hashMap).filter((dir) => dir.length > 1);
 };
