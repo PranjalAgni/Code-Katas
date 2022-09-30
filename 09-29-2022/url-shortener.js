@@ -2,22 +2,45 @@ class UrlShortener {
   constructor() {
     this.urlVsShortCodeMap = new Map();
     this.shortCodeVsUrlMap = new Map();
+    // this.numCharacters = 0;
   }
 
-  generateCode() {}
+  generateCode() {
+    const numCharacters = Math.floor(Math.random() * 4);
+    let code = '';
+    for (let idx = 0; idx < numCharacters; idx++) {
+      const charIndex = Math.floor(Math.random() * 26);
+      code += String.fromCharCode(97 + charIndex);
+    }
+
+    return code;
+  }
+
+  prefixHost(code) {
+    return `short.ly/${code}`;
+  }
+
   shorten(longURL) {
     if (this.urlVsShortCodeMap.has(longURL))
-      return this.urlVsShortCodeMap.get(longURL);
-    const code = this.generateCode();
-    return shortURL;
+      return this.prefixHost(this.urlVsShortCodeMap.get(longURL));
+    let code = this.generateCode();
+    while (this.shortCodeVsUrlMap.has(code)) {
+      code = this.generateCode();
+    }
+    this.urlVsShortCodeMap.set(longURL, code);
+    this.shortCodeVsUrlMap.set(code, longURL);
+    return this.prefixHost(code);
   }
 
   redirect(shortURL) {
-    return longURL;
+    if (!shortURL) return null;
+    const code = shortURL.split('/')[1];
+    return this.shortCodeVsUrlMap.get(code);
   }
 }
 
 const testFormat = (string) => {
+  console.log(string);
   console.log(
     /^short.ly\/[a-z]{1,4}$/.test(string),
     `"${string}" url format is incorrect: should starts with "short.ly/", with length<14 and only lowercase letters a the end.`
