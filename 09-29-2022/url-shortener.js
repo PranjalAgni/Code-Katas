@@ -2,17 +2,15 @@ class UrlShortener {
   constructor() {
     this.urlVsShortCodeMap = new Map();
     this.shortCodeVsUrlMap = new Map();
-    // this.numCharacters = 0;
   }
 
   generateCode() {
-    const numCharacters = Math.floor(Math.random() * 4);
+    const numCharacters = Math.floor(Math.random() * 4 + 1);
     let code = '';
     for (let idx = 0; idx < numCharacters; idx++) {
       const charIndex = Math.floor(Math.random() * 26);
       code += String.fromCharCode(97 + charIndex);
     }
-
     return code;
   }
 
@@ -51,6 +49,8 @@ const urlShortener = new UrlShortener();
 let shortUrl1 = urlShortener.shorten(
   'https://www.codewars.com/kata/5ef9ca8b76be6d001d5e1c3e'
 );
+console.log(urlShortener.shorten('https://somethingelseornothingsssssssssss'));
+
 testFormat(shortUrl1);
 let shortUrl2 = urlShortener.shorten(
   'https://www.codewars.com/kata/5efae11e2d12df00331f91a6'
