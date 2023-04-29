@@ -4,7 +4,7 @@ const debounce = (fn, delay, immediate) => {
   return (...args) => {
     if (timeoutId) clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
-      fn(...args2);
+      fn(...args);
     }, delay);
   };
 };
