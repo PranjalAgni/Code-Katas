@@ -30,7 +30,7 @@ function playPass(s, n) {
         transformedChar = String(transformedChar).toLowerCase();
       }
     } else if (isDigit(char)) {
-      transformedChar = Math.abs(9 - parseInt(char));
+      transformedChar = String(Math.abs(9 - parseInt(char)));
     }
 
     answer += transformedChar;
