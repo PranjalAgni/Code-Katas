@@ -8,7 +8,7 @@ function isAlphabet(char) {
 
 function rotateChar(char, rotation) {
   const asciiCode = char.charCodeAt(0) + (rotation % 26);
-  console.log('Rotated char: ', String.fromCharCode(asciiCode));
+  console.log('Rotated char log: ', String.fromCharCode(asciiCode));
   return String.fromCharCode(asciiCode);
 }
 
