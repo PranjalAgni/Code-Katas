@@ -1,4 +1,4 @@
-// 24 august in bangalore 
+// 24 august in bangalore and in wasseypur 
 function isDigit(char) {
   return char >= '0' && char <= '9';
 }
