@@ -1,17 +1,40 @@
-// 24 august in bangalore and in wasseypur 
+// 24 august in bangalore and in wasseypur
 // 26 august colive pg
 function isDigit(char) {
   return char >= '0' && char <= '9';
 }
 
+function isLowerCaseAlphabet(char) {
+  return char >= 'a' && char <= 'z';
+}
+
+function isUpperCaseAlphabet(char) {
+  return char >= 'A' && char <= 'Z';
+}
+
+const alphabets = [];
+let ch = 'A';
+while (ch <= 'Z') {
+  alphabets.push(ch);
+  ch = String.fromCharCode(ch.charCodeAt(0) + 1);
+}
+ch = 'a';
+while (ch <= 'z') {
+  alphabets.push(ch);
+  ch = String.fromCharCode(ch.charCodeAt(0) + 1);
+}
+
 function isAlphabet(char) {
-  return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z');
+  return isLowerCaseAlphabet(char) || isUpperCaseAlphabet(char);
 }
 
 function rotateChar(char, rotation) {
-  const asciiCode = char.charCodeAt(0) + (rotation % 26);
-  console.log('Rotated char log: ', String.fromCharCode(asciiCode));
-  return String.fromCharCode(asciiCode);
+  const asciiCode = char.charCodeAt(0);
+  const segmentStartAt = isUpperCaseAlphabet(char) ? 65 : 97;
+  const charIdx = asciiCode - segmentStartAt;
+  rotation = rotation % 52;
+  const newIdx = charIdx + rotation;
+  return alphabets[newIdx];
 }
 
 /**
@@ -26,7 +49,7 @@ function playPass(s, n) {
     const char = s[idx];
     let transformedChar = char;
     if (isAlphabet(char)) {
-      transformedChar = rotateChar(s[idx], n);
+      transformedChar = rotateChar(char, n);
       if (idx % 2 === 0) {
         transformedChar = String(transformedChar).toUpperCase();
       } else {
