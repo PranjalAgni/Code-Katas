@@ -32,8 +32,7 @@ function rotateChar(char, rotation) {
   const asciiCode = char.charCodeAt(0);
   const segmentStartAt = isUpperCaseAlphabet(char) ? 65 : 97;
   const charIdx = asciiCode - segmentStartAt;
-  rotation = rotation % 52;
-  const newIdx = charIdx + rotation;
+  const newIdx = (charIdx + rotation) % 52;
   return alphabets[newIdx];
 }
 
