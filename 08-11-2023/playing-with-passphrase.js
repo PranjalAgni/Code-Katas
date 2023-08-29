@@ -1,5 +1,7 @@
 // 24 august in bangalore and in wasseypur
 // 26 august colive pg
+// 29 august(1:59 PM) working solution with the best approach
+
 function isDigit(char) {
   return char >= '0' && char <= '9';
 }
@@ -12,16 +14,11 @@ function isUpperCaseAlphabet(char) {
   return char >= 'A' && char <= 'Z';
 }
 
-const alphabets = [];
-let ch = 'A';
-while (ch <= 'Z') {
-  alphabets.push(ch);
-  ch = String.fromCharCode(ch.charCodeAt(0) + 1);
-}
-ch = 'a';
-while (ch <= 'z') {
-  alphabets.push(ch);
-  ch = String.fromCharCode(ch.charCodeAt(0) + 1);
+function getAlphabetIndexFromChar(char) {
+  const asciiCode = char.charCodeAt(0);
+  const segmentStartAt = isUpperCaseAlphabet(char) ? 65 : 97;
+  let startingIndex = asciiCode >= 65 && asciiCode <= 90 ? 0 : 26;
+  return startingIndex + (asciiCode - segmentStartAt);
 }
 
 function isAlphabet(char) {
@@ -29,11 +26,13 @@ function isAlphabet(char) {
 }
 
 function rotateChar(char, rotation) {
-  const asciiCode = char.charCodeAt(0);
-  const segmentStartAt = isUpperCaseAlphabet(char) ? 65 : 97;
-  const charIdx = asciiCode - segmentStartAt;
-  const newIdx = (charIdx + rotation) % 52;
-  return alphabets[newIdx];
+  const alphabetIndex = getAlphabetIndexFromChar(char);
+  let newAlphabetIndex = (alphabetIndex + rotation) % 52;
+  const startingIndex =
+    newAlphabetIndex >= 0 && newAlphabetIndex < 26 ? 65 : 97;
+  if (newAlphabetIndex >= 26) newAlphabetIndex -= 26;
+  const newAsciiCode = startingIndex + newAlphabetIndex;
+  return String.fromCharCode(newAsciiCode);
 }
 
 /**
