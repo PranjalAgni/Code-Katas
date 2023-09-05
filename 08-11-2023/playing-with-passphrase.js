@@ -42,7 +42,7 @@ function rotateChar(char, rotation) {
  */
 function playPass(s, n) {
   const N = s.length;
-  let answer = '';
+  let answer = "";
   for (let idx = 0; idx < N; idx++) {
     const char = s[idx];
     let transformedChar = char;
