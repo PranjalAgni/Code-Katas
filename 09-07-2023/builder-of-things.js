@@ -7,6 +7,8 @@ class Thing {
       return target[key];
     },
     set(target, key, val) {
+      // The Reflect.defineProperty() static method is like Object.defineProperty() but returns a Boolean.
+      Reflect.defineProperty(target, `is_a_${key}`, { value: val });
       target[`is_a_${key}`] = val;
     },
   });
