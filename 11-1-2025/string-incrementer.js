@@ -1,33 +1,46 @@
-function extractNumber(str) {
-  const N = str.length - 1;
-  let answer = '';
-  for (let idx = N - 1; idx >= 0; idx--) {
-    let ch = str[idx];
+function splitWordByNumberSuffix(word) {
+  const N = word.length;
+  let end = N - 1;
+  while (end >= 0) {
+    const ch = word[end];
     if (Number.isNaN(parseInt(ch))) {
       break;
     }
 
-    answer = ch + answer;
+    end -= 1;
   }
 
-  return answer;
+  const prefix = word.substr(0, end + 1);
+  const suffix = word.substr(end + 1);
+  return [prefix, suffix];
 }
-function incrementString(str) {
-  const number = extractNumber(str);
-  if (number.length === 0) {
-    return str + '1';
+
+function incrementString(word) {
+  const [prefix, suffix] = splitWordByNumberSuffix(word);
+  if (suffix.length === 0) {
+    return prefix + '1';
   }
 
-  const num = parseInt(number);
-  return '42';
+  const originalWidth = suffix.length;
+  const num = parseInt(suffix);
+  const newNum = num + 1;
+  const newWidth = String(newNum).length;
+  const zerosNeeded = Math.max(0, originalWidth - newWidth);
+
+  return prefix + '0'.repeat(zerosNeeded) + String(newNum);
 }
 
-console.log('foobar000', 'foobar001');
-console.log('foobar999', 'foobar1000');
-console.log('foobar00999', 'foobar01000');
-console.log('foo', 'foo1');
-console.log('foobar001', 'foobar002');
-console.log('foobar1', 'foobar2');
-console.log('1', '2');
-console.log('009', '010');
-console.log('fo99obar99', 'fo99obar100');
+function doTest(input, expected) {
+  const actual = incrementString(input);
+  console.log(actual, expected);
+}
+
+doTest('foobar000', 'foobar001');
+doTest('foobar999', 'foobar1000');
+doTest('foobar00999', 'foobar01000');
+doTest('foo', 'foo1');
+doTest('foobar001', 'foobar002');
+doTest('foobar1', 'foobar2');
+doTest('1', '2');
+doTest('009', '010');
+doTest('fo99obar99', 'fo99obar100');
